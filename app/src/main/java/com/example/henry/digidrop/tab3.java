@@ -5,7 +5,9 @@ package com.example.henry.digidrop;
  */
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,43 +26,87 @@ import java.net.URL;
  */
 
 public class tab3 extends Fragment {
+
+    private EditText editText;
+    private EditText editText2;
+    private Button button;
+    private Button button2;
+    String string;
+    String message;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.tab3, container, false);
-        Button button = (Button)rootView.findViewById(R.id.button);
-        final EditText editText = (EditText)rootView.findViewById((R.id.editText));
-        final EditText editText2 = (EditText)rootView.findViewById((R.id.editText2));
+
+        button = (Button)rootView.findViewById(R.id.button);
+        button2 = (Button) rootView.findViewById(R.id.button2);
+        editText = (EditText)rootView.findViewById((R.id.editText));
+        editText2 = (EditText)rootView.findViewById((R.id.editText2));
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String string = editText.getText().toString();
-                String message = editText2.getText().toString();
-                HttpURLConnection connection;
-                URL url;
-                try {
-                    url = new URL(string);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoOutput(true);
-                    connection.setRequestMethod("POST");
-                    DataOutputStream wr = new DataOutputStream(connection.getOutputStream ());
-                    wr.writeBytes(message);
-                    wr.flush();
-                    wr.close();
-                    connection.disconnect();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
+            public void onClick(View view) {
+                string = editText.getText().toString();
+                message = editText2.getText().toString();
+                new sendPost().execute();
             }
         });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                string = editText.getText().toString();
+                message = editText2.getText().toString();
+                new createQr().execute();
+            }
+        });
+
+
         return rootView;
 
 
+    }
+
+    private class sendPost extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            HttpURLConnection connection;
+            URL url;
+            try {
+                url = new URL(string);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setDoOutput(true);
+                connection.setRequestMethod("POST");
+                DataOutputStream wr = new DataOutputStream(connection.getOutputStream ());
+                Log.i("Before write", "Before write");
+                wr.writeBytes("DigiDropMessageInput="+message.getBytes());
+                Log.i("After write", "After write");
+                wr.flush();
+                wr.close();
+                connection.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+    }
+
+    private class createQr extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+
+            return null;
+        }
     }
 
 }
