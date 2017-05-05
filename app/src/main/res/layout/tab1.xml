@@ -24,5 +24,4 @@
         android:layout_toEndOf="@+id/section_label"
         android:layout_toRightOf="@+id/section_label"
         android:text="Scan QR Code" />
-
-</RelativeLayout>
+   </RelativeLayout>
