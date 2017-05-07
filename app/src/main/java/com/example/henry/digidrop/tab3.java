@@ -118,10 +118,12 @@ public class tab3 extends Fragment {
                 url = new URL(string);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setDoOutput(true);
+                connection.setDoInput(true);
                 connection.setRequestMethod("POST");
                 DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
                 Log.i("Before write", "Before write");
-                wr.writeBytes(""+message.getBytes());
+                wr.writeChars(message);
+                //wr.writeBytes(""+message.getBytes());
                 Log.i("After write", "After write");
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(connection.getInputStream()));
@@ -135,8 +137,7 @@ public class tab3 extends Fragment {
 
                 wr.flush();
                 wr.close();
-                //int responseCode= connection.getResponseCode();
-                //Toast.makeText(getContext(), "" + responseCode, Toast.LENGTH_SHORT).show();
+
                 connection.disconnect();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
