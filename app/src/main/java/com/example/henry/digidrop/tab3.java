@@ -118,7 +118,7 @@ public class tab3 extends Fragment {
                 connection.setRequestMethod("POST");
                 DataOutputStream wr = new DataOutputStream(connection.getOutputStream ());
                 Log.i("Before write", "Before write");
-                wr.writeBytes("DigiDropMessageInput="+message.getBytes());
+                wr.writeBytes(""+message.getBytes());
                 Log.i("After write", "After write");
                 wr.flush();
                 wr.close();

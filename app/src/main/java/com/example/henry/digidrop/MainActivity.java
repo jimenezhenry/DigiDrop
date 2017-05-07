@@ -164,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
         if (pubKey == null && privKey == null){
             keyPair();
         }
+        //Toast.makeText(getApplicationContext(), "Hi", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), pubKey.toString(), Toast.LENGTH_LONG).show();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
