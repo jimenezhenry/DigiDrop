@@ -26,7 +26,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Website"
-        android:text="http://vertigo.cs.umd.edu/testDigiDrop.php"/>
+        android:text="vertigo.cs.umd.edu/testDigiDrop.php"/>
 
     <EditText
         android:id="@+id/editText2"

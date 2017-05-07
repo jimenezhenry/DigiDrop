@@ -18,14 +18,17 @@ import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -116,12 +119,24 @@ public class tab3 extends Fragment {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setDoOutput(true);
                 connection.setRequestMethod("POST");
-                DataOutputStream wr = new DataOutputStream(connection.getOutputStream ());
+                DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
                 Log.i("Before write", "Before write");
                 wr.writeBytes(""+message.getBytes());
                 Log.i("After write", "After write");
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
                 wr.flush();
                 wr.close();
+                int responseCode= connection.getResponseCode();
+                Toast.makeText(getContext(), "" + responseCode, Toast.LENGTH_SHORT).show();
                 connection.disconnect();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
