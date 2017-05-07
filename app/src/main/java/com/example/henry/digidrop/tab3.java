@@ -135,8 +135,8 @@ public class tab3 extends Fragment {
 
                 wr.flush();
                 wr.close();
-                int responseCode= connection.getResponseCode();
-                Toast.makeText(getContext(), "" + responseCode, Toast.LENGTH_SHORT).show();
+                //int responseCode= connection.getResponseCode();
+                //Toast.makeText(getContext(), "" + responseCode, Toast.LENGTH_SHORT).show();
                 connection.disconnect();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
