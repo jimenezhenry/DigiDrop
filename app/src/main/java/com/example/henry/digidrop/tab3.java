@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,9 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -115,37 +119,14 @@ public class tab3 extends Fragment {
             HttpURLConnection connection;
             URL url;
             try {
-                url = new URL(string);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setDoOutput(true);
-                connection.setDoInput(true);
-                connection.setRequestMethod("POST");
-                DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-                Log.i("Before write", "Before write");
-                wr.writeChars(message);
-                //wr.writeBytes(""+message.getBytes());
-                Log.i("After write", "After write");
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
+                Document doc = Jsoup.connect(string).data("DigiDropMessageInput", message).post();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                wr.flush();
-                wr.close();
-
-                connection.disconnect();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
+            
             return null;
         }
     }
