@@ -1,6 +1,8 @@
 package com.example.henry.digidrop;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -34,11 +36,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.KeyPair;
 
 import static com.example.henry.digidrop.R.id.editText;
 
 public class MainActivity extends AppCompatActivity {
 
+    public KeyPair keys;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -48,11 +52,17 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    ////why mwotnfladlfadf
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    private KeyPair keyPair() {
+        SharedPreferences shared = getApplicationContext().getSharedPreferences("DATA", Context.MODE_PRIVATE);
+        //keys = shared.getString("DATA", null);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
