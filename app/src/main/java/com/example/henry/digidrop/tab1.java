@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,12 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import org.jsoup.Connection;
+
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.spec.X509EncodedKeySpec;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -89,11 +95,25 @@ public class tab1 extends Fragment implements ZXingScannerView.ResultHandler {
     }
 
     public void handleResult(Result rawResult) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Scan Result");
-        builder.setMessage(rawResult.getText());
-        AlertDialog alert1 = builder.create();
-        alert1.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setTitle("Scan Result");
+//        builder.setMessage(rawResult.getText());
+//        AlertDialog alert1 = builder.create();
+//        alert1.show();
+
+        try {
+            String pubKey = rawResult.getText();
+            byte[] publicKeyBytes = Base64.decode(pubKey, Base64.DEFAULT);
+            X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(publicKeyBytes);
+
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            MainActivity.recipientKey = kf.generatePublic(X509publicKey);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (java.security.spec.InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

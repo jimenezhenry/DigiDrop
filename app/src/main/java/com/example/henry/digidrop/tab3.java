@@ -36,6 +36,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * Created by Henry on 5/1/2017.
@@ -50,7 +55,7 @@ public class tab3 extends Fragment {
     private ImageView image;
     String string;
     String message;
-
+    Cipher cipher;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,9 +70,25 @@ public class tab3 extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                string = editText.getText().toString();
-                message = editText2.getText().toString();
-                new sendPost().execute();
+                try {
+                    string = editText.getText().toString();
+                    message = editText2.getText().toString();
+                    byte[] bytes = message.getBytes();
+                    cipher = Cipher.getInstance("RSA");
+                    cipher.init(Cipher.ENCRYPT_MODE, MainActivity.recipientKey);
+                    byte[] encrypted = cipher.doFinal(bytes);
+                    new sendPost().execute();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (javax.crypto.IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (javax.crypto.BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -119,14 +140,14 @@ public class tab3 extends Fragment {
             HttpURLConnection connection;
             URL url;
             try {
-                Document doc = Jsoup.connect(string).data("DigiDropMessageInput", message).post();
+                Document doc = Jsoup.connect(string).data("DigiDropMessageInput", cipher.toString()).post();
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
             return null;
         }
     }

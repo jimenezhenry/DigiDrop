@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     public KeyPair keyPair;
     public PublicKey pubKey;
     public PrivateKey privKey;
+    public static PublicKey recipientKey;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
