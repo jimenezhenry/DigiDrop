@@ -3,6 +3,7 @@ package com.example.henry.digidrop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.zxing.Result;
 
@@ -12,7 +13,9 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  * Created by Evan on 5/8/17.
  */
 
-public class ImportForeignPublicKeyActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class ImportForeignPublicKeyActivity extends AppCompatActivity {
+
+    private static String TAG = ImportForeignPublicKeyActivity.class.getSimpleName();
 
     public static final String FOREIGN_PUB_KEY = "Foreign pub key";
 
@@ -24,8 +27,23 @@ public class ImportForeignPublicKeyActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_import_foreign_public_key);
 
         mScannerView = new ZXingScannerView(this);
+        mScannerView.setAutoFocus(true);
+        mScannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
+            @Override
+            public void handleResult(Result result) {
+                Log.i(TAG, "handleResult");
+                //mScannerView.resumeCameraPreview(this);
+                Intent data = new Intent();
+                data.putExtra(FOREIGN_PUB_KEY, result.getText());
+                setResult(RESULT_OK, data);
+
+                mScannerView.stopCamera();
+
+                finish();
+            }
+        });
         setContentView(mScannerView);
-        mScannerView.setResultHandler(this);
+
     }
 
     @Override
@@ -38,8 +56,13 @@ public class ImportForeignPublicKeyActivity extends AppCompatActivity implements
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i(TAG, "onPause()");
+    }
 
-//        mScannerView.stopCamera();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
     public static String getImportedKey(Intent data) {
@@ -48,11 +71,4 @@ public class ImportForeignPublicKeyActivity extends AppCompatActivity implements
                 null;
     }
 
-    @Override
-    public void handleResult(Result result) {
-        Intent data = new Intent();
-        data.putExtra(FOREIGN_PUB_KEY, result.getText());
-        setResult(RESULT_OK, data);
-        finish();
-    }
 }

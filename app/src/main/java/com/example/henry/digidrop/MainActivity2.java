@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import com.example.henry.digidrop.services.CryptoUtils;
 import com.example.henry.digidrop.services.KeyService;
+import com.google.zxing.Result;
+
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
  * Created by Evan on 5/8/17.
@@ -29,6 +32,10 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        initUi();
+    }
+
+    private void initUi() {
         mGenKeysButton = (Button) findViewById(R.id.generate_keys_button);
         mImportForeignKeyButton = (Button) findViewById(R.id.import_foreign_key_button);
         mPutMsgButton = (Button) findViewById(R.id.put_msg_button);
@@ -74,7 +81,24 @@ public class MainActivity2 extends AppCompatActivity {
         mImportForeignKeyButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                startActivityForResult(new Intent(getApplicationContext(), ImportForeignPublicKeyActivity.class), 0);
+                final ZXingScannerView mScannerView;
+                mScannerView = new ZXingScannerView(MainActivity2.this);
+                mScannerView.setAutoFocus(true);
+                mScannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
+                    @Override
+                    public void handleResult(Result result) {
+                        //mScannerView.resumeCameraPreview(this);
+                        mScannerView.stopCamera();
+                        setContentView(R.layout.activity_main2);
+                        initUi();
+
+                        KeyService.saveForeignPubKey(result.getText());
+                        Toast toast = Toast.makeText(getApplicationContext(), result.getText(), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+                setContentView(mScannerView);
+                mScannerView.startCamera();
                 return true;
             }
         });
@@ -83,6 +107,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 startActivity(new Intent(getApplicationContext(), PutMsgActivity.class));
+                finish();
                 return true;
             }
         });
@@ -91,6 +116,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 startActivity(new Intent(getApplicationContext(), GetMsgActivity.class));
+                finish();
                 return true;
             }
         });
