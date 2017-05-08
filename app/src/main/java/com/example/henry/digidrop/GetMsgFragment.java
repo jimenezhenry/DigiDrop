@@ -14,7 +14,7 @@ import android.support.v4.app.Fragment;
  * Created by Henry on 5/1/2017.
  */
 
-public class tab2 extends Fragment {
+public class GetMsgFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

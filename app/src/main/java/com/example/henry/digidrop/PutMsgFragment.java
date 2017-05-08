@@ -4,22 +4,17 @@ package com.example.henry.digidrop;
  * Created by Henry on 5/2/2017.
  */
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -29,10 +24,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,7 +38,7 @@ import javax.crypto.NoSuchPaddingException;
  * Created by Henry on 5/1/2017.
  */
 
-public class tab3 extends Fragment {
+public class PutMsgFragment extends Fragment {
 
     private EditText editText;
     private EditText editText2;
@@ -77,7 +69,7 @@ public class tab3 extends Fragment {
                     cipher = Cipher.getInstance("RSA");
                     cipher.init(Cipher.ENCRYPT_MODE, MainActivity.recipientKey);
                     byte[] encrypted = cipher.doFinal(bytes);
-                    new sendPost().execute();
+                    new SendPostAsyncTask().execute();
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 } catch (NoSuchPaddingException e) {
@@ -131,8 +123,7 @@ public class tab3 extends Fragment {
         return bmp;
     }
 
-
-    private class sendPost extends AsyncTask {
+    private class SendPostAsyncTask extends AsyncTask {
 
         @Override
         protected Object doInBackground(Object[] objects) {

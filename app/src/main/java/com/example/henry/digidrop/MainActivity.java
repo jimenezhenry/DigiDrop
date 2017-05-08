@@ -1,7 +1,6 @@
 package com.example.henry.digidrop;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -15,28 +14,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -46,8 +29,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.spec.X509EncodedKeySpec;
-
-import static com.example.henry.digidrop.R.id.editText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -215,13 +196,13 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    tab1 tab = new tab1();
+                    QRReaderFragment tab = new QRReaderFragment();
                     return tab;
                 case 1:
-                    tab2 tabtoo = new tab2();
+                    GetMsgFragment tabtoo = new GetMsgFragment();
                     return tabtoo;
                 case 2:
-                    tab3 tabthree = new tab3();
+                    PutMsgFragment tabthree = new PutMsgFragment();
                     return tabthree;
                 default:
                     return null;
