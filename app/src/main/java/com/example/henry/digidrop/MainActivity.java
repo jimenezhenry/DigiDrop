@@ -51,37 +51,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    private void keyPair() {
-        SharedPreferences shared = getApplicationContext().getSharedPreferences("Context", Context.MODE_PRIVATE);
-        String pubKeyString = shared.getString("PublicKey", null);
-        String privKeyString = shared.getString("PrivateKey", null);
-        SharedPreferences.Editor SPE;
-        if (pubKeyString == null && privKeyString == null) {
-            try {
-                KeyPairGenerator generator;
-                generator = KeyPairGenerator.getInstance("RSA", "BC");
-                generator.initialize(256, new SecureRandom());
-                keyPair = generator.generateKeyPair();
-                pubKey = keyPair.getPublic();
-                privKey = keyPair.getPrivate();
 
-                byte[] publicKeyBytes = pubKey.getEncoded();
-                String pubKeyStr = new String(Base64.encode(publicKeyBytes, Base64.DEFAULT));
-                byte[] privKeyBytes = privKey.getEncoded();
-                String privKeyStr = new String(Base64.encode(privKeyBytes, Base64.DEFAULT));
-                SPE = shared.edit();
-                SPE.putString("PublicKey", pubKeyStr);
-                SPE.putString("PrivateKey", privKeyStr);
-                SPE.commit();
-
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
     public PublicKey getPublicKey(){
         SharedPreferences shared = getApplicationContext().getSharedPreferences("Context", MODE_PRIVATE);
         String pubKeyStr = shared.getString("PublicKey", "");
