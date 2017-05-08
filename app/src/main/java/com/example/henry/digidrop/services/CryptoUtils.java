@@ -1,4 +1,4 @@
-package com.example.henry.digidrop.model;
+package com.example.henry.digidrop.services;
 
 import android.util.Base64;
 

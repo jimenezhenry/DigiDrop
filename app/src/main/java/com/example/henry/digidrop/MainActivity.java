@@ -18,7 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.henry.digidrop.model.CryptoUtils;
+import com.example.henry.digidrop.services.CryptoUtils;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
