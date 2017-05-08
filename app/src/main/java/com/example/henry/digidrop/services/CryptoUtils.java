@@ -49,6 +49,10 @@ public class CryptoUtils {
     }
     */
 
+    public static String encryptMsg(String msg, String pubkey) {
+        return null;
+    }
+
     public static KeyPair generateKeys() {
         KeyPair keyPair;
         try {

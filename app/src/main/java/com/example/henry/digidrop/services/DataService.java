@@ -4,7 +4,7 @@ package com.example.henry.digidrop.services;
  * Created by Evan on 5/8/17.
  */
 
-public class KeyService {
+public class DataService {
 
     private static final String MY_PUB_KEY_CODE = "MY_PUB_KEY_CODE";
     private static final String MY_PVT_KEY_CODE = "MY_PVT_KEY_CODE";

@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.henry.digidrop.services.CryptoUtils;
-import com.example.henry.digidrop.services.KeyService;
+import com.example.henry.digidrop.services.DataService;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -52,8 +52,8 @@ public class MainActivity2 extends AppCompatActivity {
                 case RESULT_OK:
                     String foreignKey = ImportForeignPublicKeyActivity.getImportedKey(data);
                     if(foreignKey != null) {
-                        KeyService.saveForeignPubKey(foreignKey);
-                        Toast toast = Toast.makeText(this, foreignKey, Toast.LENGTH_SHORT);
+                        DataService.saveForeignPubKey(foreignKey);
+                        Toast toast = Toast.makeText(this, "Successfully saved key", Toast.LENGTH_SHORT);
                         toast.show();
                     } else {
                         Toast toast = Toast.makeText(this, "Error importing keys", Toast.LENGTH_SHORT);
@@ -73,7 +73,7 @@ public class MainActivity2 extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 CryptoUtils.KeyWrapper keyStrs = CryptoUtils
                         .convertKeysToString(CryptoUtils.generateKeys());
-                KeyService.saveMyKeys(keyStrs);
+                DataService.saveMyKeys(keyStrs);
                 return true;
             }
         });
@@ -87,13 +87,12 @@ public class MainActivity2 extends AppCompatActivity {
                 mScannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
                     @Override
                     public void handleResult(Result result) {
-                        //mScannerView.resumeCameraPreview(this);
                         mScannerView.stopCamera();
                         setContentView(R.layout.activity_main2);
                         initUi();
 
-                        KeyService.saveForeignPubKey(result.getText());
-                        Toast toast = Toast.makeText(getApplicationContext(), result.getText(), Toast.LENGTH_SHORT);
+                        DataService.saveForeignPubKey(result.getText());
+                        Toast toast = Toast.makeText(getApplicationContext(), "Successfully saved key", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 });
