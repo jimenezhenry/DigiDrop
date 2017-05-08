@@ -2,32 +2,30 @@ package com.example.henry.digidrop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.Toast;
+
+import com.example.henry.digidrop.model.CryptoUtils;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.SecureRandom;
 import java.security.spec.X509EncodedKeySpec;
 
 public class MainActivity extends AppCompatActivity {
@@ -114,7 +112,15 @@ public class MainActivity extends AppCompatActivity {
         privKey = getPrivateKey();
 
         if (pubKey == null && privKey == null){
-            keyPair();
+            CryptoUtils.KeyWrapper keys = CryptoUtils.convertKeysToString(CryptoUtils.generateKeys());
+            SharedPreferences shared = getApplicationContext().getSharedPreferences("Context", Context.MODE_PRIVATE);
+            String pubKeyString = shared.getString("PublicKey", null);
+            String privKeyString = shared.getString("PrivateKey", null);
+            SharedPreferences.Editor SPE;
+            SPE = shared.edit();
+            SPE.putString("PublicKey", keys.getPub());
+            SPE.putString("PrivateKey", keys.getPvt());
+            SPE.commit();
         }
         //Toast.makeText(getApplicationContext(), "Hi", Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(), pubKey.toString(), Toast.LENGTH_LONG).show();
