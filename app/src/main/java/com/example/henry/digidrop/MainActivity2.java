@@ -46,6 +46,8 @@ public class MainActivity2 extends AppCompatActivity {
                     String foreignKey = ImportForeignPublicKeyActivity.getImportedKey(data);
                     if(foreignKey != null) {
                         KeyService.saveForeignPubKey(foreignKey);
+                        Toast toast = Toast.makeText(this, foreignKey, Toast.LENGTH_SHORT);
+                        toast.show();
                     } else {
                         Toast toast = Toast.makeText(this, "Error importing keys", Toast.LENGTH_SHORT);
                         toast.show();

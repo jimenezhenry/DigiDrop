@@ -21,11 +21,25 @@ public class ImportForeignPublicKeyActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_import_foreign_public_key);
 
         mScannerView = new ZXingScannerView(this);
         setContentView(mScannerView);
         mScannerView.setResultHandler(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         mScannerView.startCamera();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+//        mScannerView.stopCamera();
     }
 
     public static String getImportedKey(Intent data) {
@@ -39,8 +53,6 @@ public class ImportForeignPublicKeyActivity extends AppCompatActivity implements
         Intent data = new Intent();
         data.putExtra(FOREIGN_PUB_KEY, result.getText());
         setResult(RESULT_OK, data);
-        mScannerView.stopCamera();
-
         finish();
     }
 }
