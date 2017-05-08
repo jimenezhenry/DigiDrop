@@ -111,11 +111,11 @@ public class MainActivity extends AppCompatActivity {
         pubKey = getPublicKey();
         privKey = getPrivateKey();
 
+        SharedPreferences shared = getApplicationContext().getSharedPreferences("Context", Context.MODE_PRIVATE);
+        String pubKeyString = shared.getString("PublicKey", null);
+        String privKeyString = shared.getString("PrivateKey", null);
         if (pubKey == null && privKey == null){
             CryptoUtils.KeyWrapper keys = CryptoUtils.convertKeysToString(CryptoUtils.generateKeys());
-            SharedPreferences shared = getApplicationContext().getSharedPreferences("Context", Context.MODE_PRIVATE);
-            String pubKeyString = shared.getString("PublicKey", null);
-            String privKeyString = shared.getString("PrivateKey", null);
             SharedPreferences.Editor SPE;
             SPE = shared.edit();
             SPE.putString("PublicKey", keys.getPub());
