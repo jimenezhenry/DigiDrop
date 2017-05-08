@@ -5,10 +5,12 @@ package com.example.henry.digidrop;
  */
 
 /*Does vcs work*/
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,12 +89,18 @@ public class QRReaderFragment extends Fragment implements ZXingScannerView.Resul
     }
 
     public void handleResult(Result rawResult) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//        builder.setTitle("Scan Result");
-//        builder.setMessage(rawResult.getText());
-//        AlertDialog alert1 = builder.create();
-//        alert1.show();
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Scan Result");
+        builder.setMessage(rawResult.getText());
+        builder.setNeutralButton("Close", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert1 = builder.create();
+        alert1.show();
+        mScannerView.stopCamera();
+/*
         try {
             String pubKey = rawResult.getText();
             byte[] publicKeyBytes = Base64.decode(pubKey, Base64.DEFAULT);
@@ -105,6 +113,7 @@ public class QRReaderFragment extends Fragment implements ZXingScannerView.Resul
         } catch (java.security.spec.InvalidKeySpecException e) {
             e.printStackTrace();
         }
+        */
 
     }
 
