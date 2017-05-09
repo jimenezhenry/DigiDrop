@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.henry.digidrop.services.CryptoUtils;
 import com.example.henry.digidrop.services.DataService;
@@ -50,7 +51,10 @@ public class PutMsgActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String pubKeyStr = DataService.loadForeignPubKey(getApplicationContext());
                 String encryptedMsg = CryptoUtils.encryptMsg(mMsgEditText.getText().toString(), pubKeyStr);
-
+                if (pubKeyStr == null) {
+                    Toast.makeText(getApplicationContext(), "Recipient not found, message not sent", Toast.LENGTH_LONG).show();
+                    finish();
+                }
                 if(encryptedMsg != null) {
                     SendPostAsyncTask asyncTask = new SendPostAsyncTask(encryptedMsg,
                             mUrlEditText.getText().toString());
