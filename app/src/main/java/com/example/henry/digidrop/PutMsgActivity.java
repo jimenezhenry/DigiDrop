@@ -7,21 +7,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.henry.digidrop.services.CryptoUtils;
+import com.example.henry.digidrop.services.DataService;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.crypto.Cipher;
 
 /**
  * Created by Evan on 5/8/17.
  */
 
 public class PutMsgActivity extends AppCompatActivity {
+
+    private static final String TAG = PutMsgActivity.class.getSimpleName();
 
     private EditText mUrlEditText, mMsgEditText;
     private Button submitButton;
@@ -37,12 +38,20 @@ public class PutMsgActivity extends AppCompatActivity {
     private void initUi() {
         mUrlEditText = (EditText) findViewById(R.id.url_edit_text);
         mMsgEditText = (EditText) findViewById(R.id.put_msg_edit_text);
-        submitButton = (Button) findViewById(R.id.put_msg_button);
+        submitButton = (Button) findViewById(R.id.put_msg_submit_button);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String pubKeyStr = DataService.loadForeignPubKey(getApplicationContext());
+                String encryptedMsg = CryptoUtils.encryptMsg(mMsgEditText.getText().toString(), pubKeyStr);
 
+                if(encryptedMsg != null) {
+                    SendPostAsyncTask asyncTask = new SendPostAsyncTask(encryptedMsg,
+                            mUrlEditText.getText().toString());
+                    asyncTask.execute();
+                }
+                finish();
             }
         });
     }
@@ -51,22 +60,18 @@ public class PutMsgActivity extends AppCompatActivity {
 
         private final String HTML_FIELD_NAME = "DigiDropMessageInput";
 
-        private String msg;
-        private Cipher cipher;
+        private String msg, url;
 
-        SendPostAsyncTask(String msg, Cipher cipher) {
+        SendPostAsyncTask(String msg, String url) {
             SendPostAsyncTask.this.msg = msg;
-            SendPostAsyncTask.this.cipher = cipher;
+            SendPostAsyncTask.this.url = url;
         }
 
         @Override
         protected Object doInBackground(Object[] objects) {
 
-            HttpURLConnection connection;
-            URL url;
             try {
-                Document doc = Jsoup.connect(msg).data(HTML_FIELD_NAME, cipher.toString()).post();
-
+                Document doc = Jsoup.connect(url).data(HTML_FIELD_NAME, msg).post();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {

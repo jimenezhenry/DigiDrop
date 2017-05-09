@@ -47,24 +47,6 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(requestCode == IMPORT_KEY) {
-            switch(resultCode) {
-                case RESULT_OK:
-                    String foreignKey = ImportForeignPublicKeyActivity.getImportedKey(data);
-                    if(foreignKey != null) {
-                        DataService.saveForeignPubKey(foreignKey);
-                        Toast toast = Toast.makeText(this, "Successfully saved key", Toast.LENGTH_SHORT);
-                        toast.show();
-                    } else {
-                        Toast toast = Toast.makeText(this, "Error importing keys", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                    break;
-                case RESULT_CANCELED:
-
-                    break;
-            }
-        }
     }
 
     private void attachButtonListeners() {
@@ -73,7 +55,9 @@ public class MainActivity2 extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 CryptoUtils.KeyWrapper keyStrs = CryptoUtils
                         .convertKeysToString(CryptoUtils.generateKeys());
-                DataService.saveMyKeys(keyStrs);
+                DataService.saveMyKeys(getApplicationContext(), keyStrs);
+                Toast toast = Toast.makeText(getApplicationContext(), "Generated new keys", Toast.LENGTH_SHORT);
+                toast.show();
                 return true;
             }
         });
@@ -91,7 +75,7 @@ public class MainActivity2 extends AppCompatActivity {
                         setContentView(R.layout.activity_main2);
                         initUi();
 
-                        DataService.saveForeignPubKey(result.getText());
+                        DataService.saveForeignPubKey(getApplicationContext(), result.getText());
                         Toast toast = Toast.makeText(getApplicationContext(), "Successfully saved key", Toast.LENGTH_SHORT);
                         toast.show();
                     }
