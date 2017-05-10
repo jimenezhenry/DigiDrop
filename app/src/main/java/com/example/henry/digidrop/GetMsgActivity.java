@@ -1,13 +1,11 @@
 package com.example.henry.digidrop;
 
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +17,10 @@ import android.widget.Toast;
 
 import com.example.henry.digidrop.services.CryptoUtils;
 import com.example.henry.digidrop.services.DataService;
+import com.example.henry.digidrop.services.GetMsgService;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Evan on 5/8/17.
@@ -43,6 +35,8 @@ public class GetMsgActivity extends AppCompatActivity {
     private RecyclerView retrievedMsgRecyclerView;
     private MsgAdapter retrievedMsgAdapter;
 
+    private String pvtKeyStr;
+
     private ProgressDialog progress;
 
     @Override
@@ -50,41 +44,40 @@ public class GetMsgActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_msg);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        pvtKeyStr = DataService.loadMyKeys(getApplicationContext()).getPvt();
+        if(pvtKeyStr == null || pvtKeyStr.length() == 0) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Error: No private key stored", Toast.LENGTH_SHORT);
+            toast.show();
+            finish();
+        }
+
         initUi();
         //updateUi();
     }
 
     private void updateUi() {
 
-        progress = new ProgressDialog(this);
-        progress.setTitle("Getting Messages");
-        progress.setMessage("Retrieving messages from DigiDrop Widget...");
-        progress.setCancelable(false);
-        progress.show();
-
-        List<String> result = null;
-        try {
-            result = new RetrieveMsgAsyncTask()
-                        .execute(getMsgUrl.getText().toString())
-                        .get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        List<String> encryptedResult = GetMsgService.getMsgs(getMsgUrl.getText().toString());
+        List<String> decryptedResult = new ArrayList<>();
+        for(String encMsg : encryptedResult) {
+            String decrMsg = CryptoUtils.decryptMsg(encMsg, pvtKeyStr);
+            if(decrMsg != null && decrMsg.length() > 0) {
+                decryptedResult.add(decrMsg);
+            }
         }
 
         if (retrievedMsgAdapter == null) {
-            if(result != null) {
-                retrievedMsgAdapter = new MsgAdapter(result);
-            } else {
-                retrievedMsgAdapter = new MsgAdapter();
-            }
+            retrievedMsgAdapter = new MsgAdapter(decryptedResult);
             retrievedMsgRecyclerView.setAdapter(retrievedMsgAdapter);
             retrievedMsgAdapter.notifyDataSetChanged();
-        } else if(result != null){
-            retrievedMsgAdapter.setRetrievedMsgs(result);
+        } else {
+            retrievedMsgAdapter.setRetrievedMsgs(decryptedResult);
             retrievedMsgAdapter.notifyDataSetChanged();
         }
 
-        if(result == null || result.isEmpty()) {
+        if(decryptedResult.isEmpty()) {
             Toast toast = Toast.makeText(this, "No messages were retrieved", Toast.LENGTH_SHORT);
             toast.show();
         }
@@ -111,38 +104,7 @@ public class GetMsgActivity extends AppCompatActivity {
         });
     }
 
-    private class RetrieveMsgAsyncTask extends AsyncTask<String, Object, List<String>> {
 
-        @Override
-        protected List<String> doInBackground(String... params) {
-            if(params.length == 0) {
-                return null;
-            }
-            List<String> decryptedMsgs = new ArrayList<>();
-            String urlStr = params[0];
-            Connection conn = Jsoup.connect(urlStr);
-            try {
-                Document doc = conn.get();
-                Element list = doc.getElementById("DigiDropMessageList");
-                for(Element li : list.children()) {
-                    String encryptedMsg = li.html();
-                    String pvtkeyStr = DataService.loadMyKeys(getApplicationContext()).getPvt();
-                    if(pvtkeyStr!= null && encryptedMsg != null && encryptedMsg.length() > 0) {
-                        Log.i(TAG, encryptedMsg);
-                        String decryptedMsg = CryptoUtils.decryptMsg(encryptedMsg, pvtkeyStr);
-                        decryptedMsgs.add(decryptedMsg);
-                        if (decryptedMsg != null && decryptedMsg.length() > 0) {
-                            decryptedMsgs.add(decryptedMsg);
-                        }
-                    }
-                }
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-            progress.dismiss();
-            return decryptedMsgs;
-        }
-    }
 
     private class MsgHolder extends RecyclerView.ViewHolder {
 

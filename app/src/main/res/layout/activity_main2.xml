@@ -33,4 +33,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/get_msg_button" />
 
+    <Button
+        android:text="Chat Mode (Alpha)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/start_chat_button" />
+
 </LinearLayout>

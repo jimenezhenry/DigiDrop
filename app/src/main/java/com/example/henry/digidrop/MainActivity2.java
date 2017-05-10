@@ -26,7 +26,8 @@ public class MainActivity2 extends AppCompatActivity {
                     mImportForeignKeyButton,
                     mPutMsgButton,
                     mGetMsgButton,
-                    mShareMyPublicKeyButton;
+                    mShareMyPublicKeyButton,
+                    mStartChatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class MainActivity2 extends AppCompatActivity {
         mPutMsgButton = (Button) findViewById(R.id.put_msg_button);
         mGetMsgButton = (Button) findViewById(R.id.get_msg_button);
         mShareMyPublicKeyButton = (Button) findViewById(R.id.share_my_pub_key_button);
+        mStartChatButton = (Button) findViewById(R.id.start_chat_button);
 
         attachButtonListeners();
     }
@@ -105,6 +107,13 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), DisplayMyPublicKeyActivity.class));
+            }
+        });
+
+        mStartChatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ChatActivity.class));
             }
         });
     }

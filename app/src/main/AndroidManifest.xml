@@ -34,6 +34,9 @@
         <activity android:name=".DisplayMyPublicKeyActivity">
         </activity>
 
+        <activity android:name=".ChatActivity">
+        </activity>
+
     </application>
 
 </manifest>

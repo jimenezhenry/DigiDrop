@@ -1,6 +1,5 @@
 package com.example.henry.digidrop;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,12 +9,7 @@ import android.widget.Toast;
 
 import com.example.henry.digidrop.services.CryptoUtils;
 import com.example.henry.digidrop.services.DataService;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
+import com.example.henry.digidrop.services.PutMsgService;
 
 /**
  * Created by Evan on 5/8/17.
@@ -56,9 +50,7 @@ public class PutMsgActivity extends AppCompatActivity {
                     finish();
                 }
                 if(encryptedMsg != null) {
-                    SendPostAsyncTask asyncTask = new SendPostAsyncTask(encryptedMsg,
-                            mUrlEditText.getText().toString());
-                    asyncTask.execute();
+                    PutMsgService.sendMsg(encryptedMsg, mUrlEditText.getText().toString());
                 }
                 DataService.savePutMsgUrl(getApplicationContext(), mUrlEditText.getText().toString());
                 finish();
@@ -66,29 +58,5 @@ public class PutMsgActivity extends AppCompatActivity {
         });
     }
 
-    private class SendPostAsyncTask extends AsyncTask {
 
-        private final String HTML_FIELD_NAME = "DigiDropMessageInput";
-
-        private String msg, url;
-
-        SendPostAsyncTask(String msg, String url) {
-            SendPostAsyncTask.this.msg = msg;
-            SendPostAsyncTask.this.url = url;
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            try {
-                Document doc = Jsoup.connect(url).data(HTML_FIELD_NAME, msg).post();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-    }
 }
