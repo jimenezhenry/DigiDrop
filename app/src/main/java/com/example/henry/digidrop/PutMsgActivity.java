@@ -52,7 +52,7 @@ public class PutMsgActivity extends AppCompatActivity {
                 String pubKeyStr = DataService.loadForeignPubKey(getApplicationContext());
                 String encryptedMsg = CryptoUtils.encryptMsg(mMsgEditText.getText().toString(), pubKeyStr);
                 if (pubKeyStr == null) {
-                    Toast.makeText(getApplicationContext(), "Recipient not found, message not sent", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "No foreign public key, message not sent", Toast.LENGTH_LONG).show();
                     finish();
                 }
                 if(encryptedMsg != null) {

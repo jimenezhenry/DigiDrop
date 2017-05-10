@@ -62,9 +62,9 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
-        mImportForeignKeyButton.setOnTouchListener(new View.OnTouchListener() {
+        mImportForeignKeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 final ZXingScannerView mScannerView;
                 mScannerView = new ZXingScannerView(MainActivity2.this);
                 mScannerView.setAutoFocus(true);
@@ -82,25 +82,20 @@ public class MainActivity2 extends AppCompatActivity {
                 });
                 setContentView(mScannerView);
                 mScannerView.startCamera();
-                return true;
             }
         });
 
-        mPutMsgButton.setOnTouchListener(new View.OnTouchListener() {
+        mPutMsgButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), PutMsgActivity.class));
-                finish();
-                return true;
             }
         });
 
-        mGetMsgButton.setOnTouchListener(new View.OnTouchListener() {
+        mGetMsgButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), GetMsgActivity.class));
-                finish();
-                return true;
             }
         });
     }

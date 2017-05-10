@@ -7,6 +7,7 @@
         android:text="Url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
         android:id="@+id/textView" />
 
     <EditText
@@ -23,8 +24,14 @@
         android:text="Retrieve Messages" />
 
     <TextView
-        android:text="TextView"
+        android:text="Retrieved Messages"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/retrieved_msg" />
+        android:id="@+id/retrieved_msg_recycler_view"/>
 </LinearLayout>
