@@ -12,18 +12,31 @@ public class DataService {
     private static final String MY_PUB_KEY_CODE = "MY_PUB_KEY_CODE";
     private static final String MY_PVT_KEY_CODE = "MY_PVT_KEY_CODE";
     private static final String FOREIGN_PUB_KEY_CODE = "FOREIGN_PUB_KEY_CODE";
-    private static final String STORED_URL_CODE = "STORED_URL_CODE";
+    private static final String STORED_PUT_MSG_URL_CODE = "STORED_PUT_MSG_URL_CODE";
+    private static final String STORED_GET_MSG_URL_CODE = "STORED_GET_MSG_URL_CODE";
 
-    public static void saveUrl(Context ctx, String url) {
+    public static void saveGetMsgUrl(Context ctx, String url) {
         SharedPreferences shared = ctx.getSharedPreferences("Context", Context.MODE_PRIVATE);
         SharedPreferences.Editor spe = shared.edit();
-        spe.putString(STORED_URL_CODE, url);
+        spe.putString(STORED_GET_MSG_URL_CODE, url);
         spe.apply();
     }
 
-    public static String loadStoredUrl(Context ctx) {
+    public static String loadStoredGetMsgUrl(Context ctx) {
         SharedPreferences shared = ctx.getSharedPreferences("Context", Context.MODE_PRIVATE);
-        return shared.getString(STORED_URL_CODE, null);
+        return shared.getString(STORED_GET_MSG_URL_CODE, null);
+    }
+
+    public static void savePutMsgUrl(Context ctx, String url) {
+        SharedPreferences shared = ctx.getSharedPreferences("Context", Context.MODE_PRIVATE);
+        SharedPreferences.Editor spe = shared.edit();
+        spe.putString(STORED_PUT_MSG_URL_CODE, url);
+        spe.apply();
+    }
+
+    public static String loadStoredPutMsgUrl(Context ctx) {
+        SharedPreferences shared = ctx.getSharedPreferences("Context", Context.MODE_PRIVATE);
+        return shared.getString(STORED_PUT_MSG_URL_CODE, null);
     }
 
     public static CryptoUtils.KeyWrapper loadMyKeys(Context ctx) {

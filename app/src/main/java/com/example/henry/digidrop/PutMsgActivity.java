@@ -41,7 +41,7 @@ public class PutMsgActivity extends AppCompatActivity {
         mMsgEditText = (EditText) findViewById(R.id.put_msg_edit_text);
         submitButton = (Button) findViewById(R.id.put_msg_submit_button);
 
-        final String storedUrl = DataService.loadStoredUrl(getApplicationContext());
+        final String storedUrl = DataService.loadStoredPutMsgUrl(getApplicationContext());
         if(storedUrl != null && storedUrl.length() > 0) {
             mUrlEditText.setText(storedUrl);
         }
@@ -60,7 +60,7 @@ public class PutMsgActivity extends AppCompatActivity {
                             mUrlEditText.getText().toString());
                     asyncTask.execute();
                 }
-                DataService.saveUrl(getApplicationContext(), mUrlEditText.getText().toString());
+                DataService.savePutMsgUrl(getApplicationContext(), mUrlEditText.getText().toString());
                 finish();
             }
         });

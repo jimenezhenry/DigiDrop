@@ -3,9 +3,28 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:text="Url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/get_msg_url" />
+
     <Button
-        android:id="@+id/retreive_messages"
+        android:id="@+id/retreive_messages_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Retrieve Messages" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/retrieved_msg" />
 </LinearLayout>

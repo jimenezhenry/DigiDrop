@@ -1,10 +1,12 @@
 package com.example.henry.digidrop;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.henry.digidrop.services.DataService;
 
@@ -15,6 +17,9 @@ import com.example.henry.digidrop.services.DataService;
 public class GetMsgActivity extends AppCompatActivity {
 
     private Button getButton;
+    private EditText getMsgUrl;
+    private TextView retrievedMsg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,21 +27,37 @@ public class GetMsgActivity extends AppCompatActivity {
 
         initUi();
     }
+
     private void initUi() {
-        getButton = (Button) findViewById(R.id.retreive_messages);
-        final String storedUrl = DataService.loadStoredUrl(getApplicationContext());
+        getButton = (Button) findViewById(R.id.retreive_messages_button);
+        getMsgUrl = (EditText) findViewById(R.id.get_msg_url);
+        retrievedMsg = (TextView) findViewById(R.id.retrieved_msg);
 
-        if(storedUrl != null && storedUrl.length() > 0) {
+        String savedUrl = DataService.loadStoredGetMsgUrl(getApplicationContext());
+        if(getMsgUrl != null) {
+            getMsgUrl.setText(savedUrl);
+        }
 
-            getButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
+        getButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RetrieveMsgAsyncTask retrieveMsgAsyncTask = new RetrieveMsgAsyncTask(getMsgUrl.getText().toString());
+                retrieveMsgAsyncTask.execute();
+            }
+        });
+    }
 
-        } else {
-            Toast.makeText(getApplicationContext(), "No website found, can't receive messages", Toast.LENGTH_LONG).show();
+    private class RetrieveMsgAsyncTask extends AsyncTask {
+
+        private String url;
+
+        RetrieveMsgAsyncTask(String url) {
+            RetrieveMsgAsyncTask.this.url = url;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            return null;
         }
     }
 }
