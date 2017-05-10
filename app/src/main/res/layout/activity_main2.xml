@@ -10,6 +10,12 @@
         android:id="@+id/generate_keys_button" />
 
     <Button
+        android:text="Share Public Key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/share_my_pub_key_button" />
+
+    <Button
         android:text="import foreign public key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

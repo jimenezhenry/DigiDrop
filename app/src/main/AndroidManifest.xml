@@ -31,6 +31,9 @@
         <activity android:name=".PutMsgActivity">
         </activity>
 
+        <activity android:name=".DisplayMyPublicKeyActivity">
+        </activity>
+
     </application>
 
 </manifest>
