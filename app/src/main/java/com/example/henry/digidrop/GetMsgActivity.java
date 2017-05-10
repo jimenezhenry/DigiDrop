@@ -43,6 +43,8 @@ public class GetMsgActivity extends AppCompatActivity {
     private RecyclerView retrievedMsgRecyclerView;
     private MsgAdapter retrievedMsgAdapter;
 
+    private ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,7 @@ public class GetMsgActivity extends AppCompatActivity {
     }
 
     private void updateUi() {
-        ProgressDialog progress;
+
         progress = new ProgressDialog(this);
         progress.setTitle("Getting Messages");
         progress.setMessage("Retrieving messages from DigiDrop Widget...");
@@ -68,7 +70,7 @@ public class GetMsgActivity extends AppCompatActivity {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        progress.dismiss();
+
         if (retrievedMsgAdapter == null) {
             if(result != null) {
                 retrievedMsgAdapter = new MsgAdapter(result);
@@ -137,7 +139,7 @@ public class GetMsgActivity extends AppCompatActivity {
             } catch(IOException e) {
                 e.printStackTrace();
             }
-
+            progress.dismiss();
             return decryptedMsgs;
         }
     }
