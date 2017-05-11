@@ -3,18 +3,21 @@ package com.example.henry.digidrop;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -205,27 +208,29 @@ public class ChatActivity extends AppCompatActivity {
 
         private CardView cardView;
         private TextView textView;
+        private LinearLayout cardLinearLayout;
         private DigiDropMessage msg;
 
         public MsgHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.received_msg_card_view);
             textView = (TextView) itemView.findViewById(R.id.received_msg_text_view);
+            cardLinearLayout = (LinearLayout) itemView.findViewById(R.id.card_view_linear_layout);
         }
 
         public void bind(DigiDropMessage msg) {
             MsgHolder.this.msg = msg;
-            textView.setText(msg.getMessage());/*
+            textView.setText(msg.getMessage());
             if (msg.iSent()) {
-                cardView.setBackgroundColor(Color.BLUE);
-                textView.setTextColor(Color.WHITE);
-                cardView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                cardLinearLayout.setGravity(Gravity.RIGHT);
+                cardView.setRadius(10);
+                cardView.setBackgroundColor(getColor(R.color.babyBlue));
             } else {
-                cardView.setBackgroundColor(Color.WHITE);
+                cardLinearLayout.setGravity(Gravity.LEFT);
+                cardView.setRadius(10);
+                cardView.setBackgroundColor(getColor(R.color.lightGray));
                 textView.setTextColor(Color.BLACK);
-                cardView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             }
-            */
         }
     }
 
