@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/babyBlue">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="3"
+        android:columnCount="2">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text=""
+                android:layout_gravity="fill"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:background="@mipmap/ic_gen_keys_1"
+                android:id="@+id/generate_keys_button" />
+        </LinearLayout>
+
+
+        <Button
+            android:text=""
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@mipmap/ic_export_key_1"
+            android:id="@+id/share_my_pub_key_button" />
+
+        <Button
+            android:text=""
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@mipmap/ic_import_key_1"
+            android:id="@+id/import_foreign_key_button"/>
+
+        <Button
+            android:text=""
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@mipmap/ic_put_msg_2"
+            android:id="@+id/put_msg_button" />
+
+        <Button
+            android:text=""
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@mipmap/ic_get_msg_1"
+            android:id="@+id/get_msg_button" />
+
+        <Button
+            android:text=""
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@mipmap/ic_chat_1"
+            android:id="@+id/start_chat_button" />
+    </GridLayout>
+</LinearLayout>
