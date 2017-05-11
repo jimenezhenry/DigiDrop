@@ -16,6 +16,7 @@
             android:id="@+id/received_msg_card_view"
             android:background="@color/cardview_dark_background"
             card_view:cardUseCompatPadding="true"
+            card_view:cardPreventCornerOverlap="false"
             card_view:cardBackgroundColor="@android:color/holo_blue_light"
             card_view:cardCornerRadius="10dp">
 

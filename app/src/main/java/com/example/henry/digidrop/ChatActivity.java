@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,7 +85,6 @@ public class ChatActivity extends AppCompatActivity {
         msgSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                msgEditText.clearFocus();
                 ChatActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 String foreignPubKey = DataService.loadForeignPubKey(getApplicationContext());
                 String url = DataService.loadStoredChatUrl(getApplicationContext());
@@ -224,11 +224,11 @@ public class ChatActivity extends AppCompatActivity {
             if (msg.iSent()) {
                 cardLinearLayout.setGravity(Gravity.RIGHT);
                 cardView.setRadius(10);
-                cardView.setBackgroundColor(getColor(R.color.babyBlue));
+                cardView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.babyBlue));
             } else {
                 cardLinearLayout.setGravity(Gravity.LEFT);
                 cardView.setRadius(10);
-                cardView.setBackgroundColor(getColor(R.color.lightGray));
+                cardView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.lightGray));
                 textView.setTextColor(Color.BLACK);
             }
         }
