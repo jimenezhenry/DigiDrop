@@ -102,8 +102,9 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "No foreign public key, message not sent", Toast.LENGTH_LONG).show();
+                            "Missing stored pubkey or URL, msg not sent", Toast.LENGTH_LONG).show();
                 }
+                msgEditText.setText("");
             }
         });
 
@@ -226,6 +227,7 @@ public class ChatActivity extends AppCompatActivity {
                 cardLinearLayout.setGravity(Gravity.RIGHT);
                 cardView.setRadius(10);
                 cardView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.babyBlue));
+                textView.setTextColor(Color.WHITE);
             } else {
                 cardLinearLayout.setGravity(Gravity.LEFT);
                 cardView.setRadius(10);
@@ -280,7 +282,11 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         public void run() {
             while (polling) {
-                String url = DataService.loadStoredChatUrl(getApplicationContext()).toString();
+                String url = DataService.loadStoredChatUrl(getApplicationContext());
+                if(url == null || url.length() == 0) {
+                    polling = false;
+                    return;
+                }
                 List<String> encryptedResult = GetMsgService.getMsgs(url);
                 if (encryptedResult != null) {
                     for (String encMsg : encryptedResult) {

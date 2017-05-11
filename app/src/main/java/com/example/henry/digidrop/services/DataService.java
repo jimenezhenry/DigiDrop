@@ -21,7 +21,8 @@ public class DataService {
     }
 
     public static String loadStoredChatUrl(Context ctx) {
-        return "http://vertigo.cs.umd.edu/testDigiDrop.php";
+        //return "http://vertigo.cs.umd.edu/testDigiDrop.php";
+        return loadStoredGetMsgUrl(ctx);
     }
 
     public static void saveGetMsgUrl(Context ctx, String url) {

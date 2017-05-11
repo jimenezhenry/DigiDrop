@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.henry.digidrop.services.CryptoUtils;
 import com.example.henry.digidrop.services.DataService;
 import com.example.henry.digidrop.services.GetMsgService;
+import com.google.common.base.CharMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class GetMsgActivity extends AppCompatActivity {
         List<String> decryptedResult = new ArrayList<>();
         for(String encMsg : encryptedResult) {
             String decrMsg = CryptoUtils.decryptMsg(encMsg, pvtKeyStr);
-            if(decrMsg != null && decrMsg.length() > 0) {
+            if(decrMsg != null && decrMsg.length() > 0 && CharMatcher.ASCII.matchesAllOf(decrMsg)) {
                 decryptedResult.add(decrMsg);
             }
         }
