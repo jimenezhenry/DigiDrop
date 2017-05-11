@@ -47,17 +47,6 @@ public class GetMsgService {
                     if(encryptedMsg != null && encryptedMsg.length() > 0) {
                         msgList.add(encryptedMsg);
                     }
-                    /*
-                    String pvtkeyStr = DataService.loadMyKeys(getApplicationContext()).getPvt();
-                    if(pvtkeyStr!= null && encryptedMsg != null && encryptedMsg.length() > 0) {
-                        Log.i(TAG, encryptedMsg);
-                        String decryptedMsg = CryptoUtils.decryptMsg(encryptedMsg, pvtkeyStr);
-                        decryptedMsgs.add(decryptedMsg);
-                        if (decryptedMsg != null && decryptedMsg.length() > 0) {
-                            decryptedMsgs.add(decryptedMsg);
-                        }
-                    }
-                    */
                 }
             } catch(IOException e) {
                 e.printStackTrace();

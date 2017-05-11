@@ -14,6 +14,15 @@ public class DataService {
     private static final String FOREIGN_PUB_KEY_CODE = "FOREIGN_PUB_KEY_CODE";
     private static final String STORED_PUT_MSG_URL_CODE = "STORED_PUT_MSG_URL_CODE";
     private static final String STORED_GET_MSG_URL_CODE = "STORED_GET_MSG_URL_CODE";
+    private static final String STORED_CHAT_URL_CODE = "STORED_CHAT_URL_CODE";
+
+    public static void saveChatUrl(Context ctx, String url) {
+
+    }
+
+    public static String loadStoredChatUrl(Context ctx) {
+        return "http://vertigo.cs.umd.edu/testDigiDrop.php";
+    }
 
     public static void saveGetMsgUrl(Context ctx, String url) {
         SharedPreferences shared = ctx.getSharedPreferences("Context", Context.MODE_PRIVATE);

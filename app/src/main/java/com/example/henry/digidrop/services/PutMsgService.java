@@ -22,7 +22,6 @@ public class PutMsgService {
     private static class SendPostAsyncTask extends AsyncTask {
 
         private final String HTML_FIELD_NAME = "DigiDropMessageInput";
-
         private String msg, url;
 
         SendPostAsyncTask(String msg, String url) {
