@@ -28,6 +28,7 @@ import com.example.henry.digidrop.services.CryptoUtils;
 import com.example.henry.digidrop.services.DataService;
 import com.example.henry.digidrop.services.GetMsgService;
 import com.example.henry.digidrop.services.PutMsgService;
+import com.google.common.base.CharMatcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -279,17 +280,15 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         public void run() {
             while (polling) {
-                Log.i(TAG, "polling for messages");
                 String url = DataService.loadStoredChatUrl(getApplicationContext()).toString();
-                Log.i(TAG, "url = " + url);
                 List<String> encryptedResult = GetMsgService.getMsgs(url);
-                Log.i(TAG, "received message, result = " + encryptedResult.size());
                 if (encryptedResult != null) {
                     for (String encMsg : encryptedResult) {
                         String decrMsg = CryptoUtils.decryptMsg(encMsg, myPvtKey);
                         if (decrMsg != null && decrMsg.length() > 0
                                 && !sentMessages.containsKey(decrMsg)
-                                && !receivedMessages.containsKey(decrMsg)) {
+                                && !receivedMessages.containsKey(decrMsg)
+                                && CharMatcher.ASCII.matchesAllOf(decrMsg)) {
                             final DigiDropMessage ddm = new DigiDropMessage(decrMsg, System.currentTimeMillis(), false);
                             receivedMessages.put(decrMsg, ddm);
                             runOnUiThread(new Runnable() {
@@ -312,45 +311,4 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 }
-
-/*
-    private class ChatAsyncTask extends AsyncTask {
-
-        @Override
-        protected Object doInBackground(Object[] params) {
-            while(polling) {
-                Log.i(TAG, "polling for messages");
-                String url = DataService.loadStoredChatUrl(getApplicationContext()).toString();
-                Log.i(TAG, "url = " + url);
-                List<String> encryptedResult = runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                });GetMsgService.getMsgs(url);
-                Log.i(TAG, "received message, result = " + encryptedResult.size());
-                if(encryptedResult != null) {
-                    for (String encMsg : encryptedResult) {
-                        String decrMsg = CryptoUtils.decryptMsg(encMsg, myPvtKey);
-                        if (decrMsg != null && decrMsg.length() > 0
-                                && !sentMessages.containsKey(decrMsg)
-                                && !receivedMessages.containsKey(decrMsg)) {
-                            DigiDropMessage ddm = new DigiDropMessage(decrMsg, System.currentTimeMillis(), false);
-                            receivedMessages.put(decrMsg, ddm);
-                            chatMsgRecyclerViewAdapter.addMessage(ddm);
-                        }
-                    }
-                }
-
-                try {
-                    Thread.sleep(200);
-                } catch(InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            Log.i(TAG, "while loop finished");
-            return null;
-        }
-    }
-    */
 
