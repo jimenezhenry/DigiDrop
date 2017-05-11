@@ -76,7 +76,7 @@ public class MainActivity2 extends AppCompatActivity {
                     @Override
                     public void handleResult(Result result) {
                         mScannerView.stopCamera();
-                        setContentView(R.layout.activity_main2);
+                        setContentView(R.layout.activity_main3);
                         initUi();
 
                         DataService.saveForeignPubKey(getApplicationContext(), result.getText());
